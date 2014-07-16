@@ -18,7 +18,7 @@ $(function() {
   }
   var rowDataTemplate = function(params) {
     var value = (params.value || params.value==0)?params.value:'';
-    return "<td class=\""+params.colName+" "+params.rowIndex+"\" data-row=\""+params.rowIndex+"\" data-col=\""+params.colIndex+"\">"+value+"</td>";
+    return "<td id=\""+params.colName+params.rowIndex+"\" class=\""+params.colName+" "+params.rowIndex+"\" data-row=\""+params.rowIndex+"\" data-col=\""+params.colIndex+"\">"+value+"</td>";
   }
 
   // convert index to column identifier, eg AA, BA, CC
@@ -50,6 +50,16 @@ $(function() {
     var selecter = '.'+row+'.'+colName(col);
     $cell = $(selecter)
     $cell.click();
+  }
+
+  var calculateFormulas = function() {
+    $('td[formula]').each(function() {
+      $target = $(this)
+      var formula = $target.attr('formula');
+      formula = formula.slice(1, formula.length);
+      var calculated = eval(formula.replace(/([A-Z][0-9])/g, "parseInt(\$('#$1').html(),10)"));
+      $target.html(calculated);
+    });
   }
 
   var data = undefined;
@@ -135,7 +145,13 @@ $(function() {
           var value = $target.text();
 
           data[rowIndex][colIndex] = value;
-          $target.text(value);
+          if (value[0] === '=') {
+            $target.attr('formula', value);
+          } else {
+            $target.text(value);
+          }
+
+          calculateFormulas();
 
           $target.off('keydown');
           $target.off('keyup');
