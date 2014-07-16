@@ -1,0 +1,26 @@
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100%;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+  font-weight: 300;
+  -webkit-font-smoothing: anti-aliased;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+table tr td {
+  min-width: 100px;
+  width: 100px;
+  min-height: 29px;
+  height: 29px;
+  padding: 5px;
+  border: 1px solid #ddd;
+}
