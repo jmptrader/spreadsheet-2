@@ -159,6 +159,89 @@ $(function() {
         });
       }
     });
+
+    var mousedown = false,
+        startRow = startCol = endRow = endCol = null;
+
+    var selectCells = function(startRow, startCol, endRow, endCol) {
+      $('table td.selected').removeClass('selected');
+
+      if (typeof endRow === 'undefined' && typeof endCol === 'undefined') {
+        $('[data-row='+startRow+'][data-col='+startCol+']').addClass('selected');
+        return;
+      }
+
+      if (startRow > endRow) {
+        var temp = endRow;
+        endRow = startRow;
+        startRow = temp;
+      }
+      if (startCol > endCol) {
+        var temp = endCol;
+        endCol = startCol;
+        startCol = temp;
+      }
+
+      for (var x = startCol; x <= endCol; x++) {
+        for (var y = startRow; y <= endRow; y++) {
+          $('[data-row='+y+'][data-col='+x+']').addClass('selected');
+        }
+      }
+    };
+
+    var deleteSelectedCells = function() {
+      $('table td.selected').each(function() {
+        var $cell = $(this),
+            row = $cell.data('row'),
+            col = $cell.data('col'),
+            value = '';
+
+        data[row][col] = value;
+        $cell.text(value);
+      });
+      calculateFormulas();
+    };
+
+    $('body').on('keydown', function(e) {
+      switch (e.keyCode) {
+        case 8: // delete
+          if (!$('table td.selected').length) return;
+
+          e.preventDefault();
+          deleteSelectedCells();
+          return false;
+          break;
+        default:
+          break;
+      }
+    });
+
+    $('table').on('mousedown', function(e) {
+      var $startCell = $(e.target);
+      mousedown = true;
+      startRow = $startCell.data('row');
+      startCol = $startCell.data('col');
+      selectCells(startRow, startCol);
+    });
+    $('table').on('mousemove', function(e) {
+      if (!mousedown) return;
+
+      var $currCell = $(e.target);
+      endRow = $currCell.data('row');
+      endCol = $currCell.data('col');
+      selectCells(startRow, startCol, endRow, endCol);
+    });
+    $('table').on('mouseup', function(e) {
+      if (!mousedown) return;
+
+      var $endCell = $(e.target);
+      mousedown = false;
+      endRow = $endCell.data('row');
+      endCol = $endCell.data('col');
+      $endCell.addClass('selected');
+      selectCells(startRow, startCol, endRow, endCol);
+    });
+
   });
 
   $('button#save').on('click', function(e) {
