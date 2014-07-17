@@ -185,9 +185,9 @@ $(function() {
         startCol = temp;
       }
 
-      for (var x = startCol; x <= endCol; x++) {
-        for (var y = startRow; y <= endRow; y++) {
-          $('[data-row='+y+'][data-col='+x+']').addClass('selected');
+      for (var col = startCol; col <= endCol; col++) {
+        for (var row = startRow; row <= endRow; row++) {
+          $('[data-row='+row+'][data-col='+col+']').addClass('selected');
         }
       }
     };
