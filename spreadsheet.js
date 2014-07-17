@@ -205,7 +205,7 @@ $(function() {
     $('body').on('keydown', function(e) {
       switch (e.keyCode) {
         case 8: // delete
-          if (!$('table td.selected').length) return;
+          if (!$('table td.selected').length || $(e.target).is('.selected')) return;
 
           e.preventDefault();
           deleteSelectedCells();
