@@ -53,9 +53,9 @@ $(function() {
   }
 
   var calculateFormulas = function() {
-    $('td[formula]').each(function() {
+    $('td[data-formula]').each(function() {
       $target = $(this)
-      var formula = $target.attr('formula');
+      var formula = $target.data('formula');
       formula = formula.slice(1, formula.length);
       var calculated = eval(formula.replace(/([A-Z][0-9])/g, "parseInt(\$('#$1').html(),10)"));
       $target.html(calculated);
@@ -146,7 +146,7 @@ $(function() {
 
           data[rowIndex][colIndex] = value;
           if (value[0] === '=') {
-            $target.attr('formula', value);
+            $target.attr('data-formula', value);
           } else {
             $target.text(value);
           }
