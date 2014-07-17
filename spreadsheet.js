@@ -104,6 +104,9 @@ $(function() {
         $target.attr('contenteditable', false);
       } else {
         $target.attr('contenteditable', true);
+        if ($target.data('formula')) {
+          $target.text($target.data('formula'));
+        }
         $target.focus();
         $target.on('keyup', function(e) {
           switch (e.keyCode) {
